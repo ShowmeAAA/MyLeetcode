@@ -1,0 +1,132 @@
+/************************************/
+LeetCode121 买卖股票的最佳时机I
+动态规划算法 C++语言 version_1
+/************************************/
+
+/*
+思路：
+可以从前往后遍历 dp_left[i]表示第1天到第i天的最大利润（要记录第1天到第i-1天的最小值）
+也可以从后往前遍历 dp_right[i]表示第1天到最后一天的最大利润（要记录第i天到最后一天的最大值）
+两者结合就可以解买卖股票的最佳时机III
+
+时间复杂度:
+O(n)
+
+优化：不设动态规划数组 直接用max_profit记录当前找到的最大值
+*/
+
+class Solution
+{
+public:
+    int maxProfit(vector<int>& prices)
+    {
+        if(prices.size() == 0)
+            return 0;
+        
+        int i;
+        int max_price = prices[prices.size() - 1];
+        vector<int> dp_right(prices.size(), 0);
+        
+        for(i = prices.size() - 2; i >= 0; i --)
+        {
+            dp_right[i] = max(dp_right[i + 1], max_price - prices[i]);
+            max_price = max(max_price, prices[i]);
+        }
+        
+        return dp_right[0];
+    }
+};
+
+/************************************/
+LeetCode121 买卖股票的最佳时机I
+贪心算法 C语言 version_1
+/************************************/
+
+
+/*
+思路：
+寻找最优的min和最优的max（max必须在min后），所以要分别对min和max进行贪心选择。
+对于一个已有的min，找到更大的max则更新max；并将max-min作为当前找到的最大利润profit。
+若找到比min更小的元素，则更新min，并更新max为min + profit（因为以前的max不可用）。
+遍历一次就可以。
+
+时间复杂度：
+O(n)
+
+优化:
+
+*/
+
+int maxProfit(int* prices, int pricesSize)
+{
+    if(pricesSize <= 1)
+        return 0;
+    
+    
+    int i;
+    int min;
+    int profit;
+    int max;
+    int tem;
+    
+    profit = 0;   
+    min = prices[0];                    //第一个元素有可能是min
+    max = 0;                            //第一个元素不可能是max
+    
+    
+    for (i = 1; i < pricesSize; i ++)   //从第二个元素开始遍历
+    {
+        tem = prices[i];
+        if(tem > max && tem > min)      
+        //tem>min的判断是解决第一个元素是整个数组中最大元素的情况                   
+        {
+            max = tem;                  
+            profit = max - min;         
+        }
+        else if(tem < min)              
+        {
+            min = tem;                 
+            max = min + profit;        
+            //关键一步：对于新的min，只有找到比它大profit的元素才更新max
+        }
+    }
+
+    return profit;
+}
+
+/*
+思路：
+灵感来自买卖股票的最佳时机III的一个巧解
+buy_left_money为买完股票后的最大收益，它就是prices[0]到prices[i]的最小值取负。
+sell_left_money为卖出股票的最大收益，它要么是0，要么是当前已经找到的最优解。
+
+这种解法其实是上面一种的简化。
+
+时间复杂度：
+O(n)
+
+优化:
+*/
+
+class Solution
+{
+public:
+    int maxProfit(vector<int>& prices)
+    {
+        if(prices.size() <= 1)
+            return 0;
+        int buy_left_money = -99999999999999;
+        int sell_left_money = 0;
+        int i;
+    
+        for(i = 0; i < prices.size(); i ++)
+        {
+            buy_left_money = max(buy_left_money, -prices[i]);
+            sell_left_money = max(sell_left_money, buy_left_money + prices[i]);
+        }
+        
+        return sell_left_money;
+    }
+};
+
+
