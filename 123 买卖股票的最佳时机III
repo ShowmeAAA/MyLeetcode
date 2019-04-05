@@ -1,0 +1,46 @@
+/************************************/
+LeetCode123 买卖股票的最佳时机III
+动态规划算法 C++语言 version_1
+/************************************/
+
+/*
+思路：
+从前往后遍历 dp_left[i]表示第1天到第i天的最大利润（要记录第1天到第i-1天的最小值）
+从后往前遍历 dp_right[i]表示第1天到最后一天的最大利润（要记录第i天到最后一天的最大值)
+dp_left[i]+dp_right[i]就是在第i天分开两段的最大利润
+
+时间复杂度:
+O(n)+O(n)
+
+优化：dp_left数组可以不设
+*/
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if(prices.size() == 0)
+            return 0;
+        
+        int i;
+        int max_profit = 0;
+        int max_price = prices[prices.size() - 1];
+        int min_price = prices[0];
+        vector<int> dp_left(prices.size(), 0);
+        vector<int> dp_right(prices.size(), 0);
+        
+        for(i = prices.size() - 2; i >= 0; i --)
+        {
+            dp_right[i] = max(dp_right[i + 1], max_price - prices[i]);
+            max_price = max(max_price, prices[i]);
+        }
+        
+        for(i = 1; i < prices.size(); i ++)
+        {
+            dp_left[i] = max(dp_left[i - 1], prices[i] - min_price);
+            min_price = min(min_price, prices[i]);
+            max_profit = max(max_profit, dp_left[i] + dp_right[i]);
+        }
+        
+        return max_profit;
+    }
+};
