@@ -3,12 +3,12 @@ package cn.hello;
 
 /**
  * 
- * @author Ğ¡±¼
- *Ë¼Â·À´×ÔÍøÉÏ 
- *¶¯Ì¬¹æ»®£º
- *µİÍÆÊ½Ô­±¾Ë¼Â·£ºÀûÓÃÉÏÒ»ĞĞµÄĞÅÏ¢µÃµ½ÏÂÒ»ĞĞ
- *Ö»ÓĞµ±ring[idxRing] = key[idxKey]Ê±£¬²Å¿ÉÒÔÆ¥Åä
- *ÀûÓÃÉÏÒ»ĞĞÖĞËùÓĞ²»ÎªNOT_MATCHµÄÊıÀ´¸üĞÂdp[idxKey][idxRing]
+ * @author å°å¥”
+ *æ€è·¯æ¥è‡ªç½‘ä¸Š 
+ *åŠ¨æ€è§„åˆ’ï¼š
+ *é€’æ¨å¼åŸæœ¬æ€è·¯ï¼šåˆ©ç”¨ä¸Šä¸€è¡Œçš„ä¿¡æ¯å¾—åˆ°ä¸‹ä¸€è¡Œ
+ *åªæœ‰å½“ring[idxRing] = key[idxKey]æ—¶ï¼Œæ‰å¯ä»¥åŒ¹é…
+ *åˆ©ç”¨ä¸Šä¸€è¡Œä¸­æ‰€æœ‰ä¸ä¸ºNOT_MATCHçš„æ•°æ¥æ›´æ–°dp[idxKey][idxRing]
  */
 public class FreedomTrail514 {
 	public static void main(String[] args) {
@@ -22,7 +22,7 @@ class Solution2 {
     	this.ring = ring;
     	int dp[][] = new int[key.length()][ring.length()];
     	
-    	//³õÊ¼»¯
+    	//åˆå§‹åŒ–
     	final int NOT_MATCH = 999999;
     	for (int i= 0; i < key.length(); i ++)
     		for (int k = 0; k < ring.length(); k ++)
@@ -31,40 +31,40 @@ class Solution2 {
     	for (int idxKey = 0; idxKey < key.length(); idxKey ++) {
     		for (int idxRing = 0; idxRing < ring.length(); idxRing ++) {
     			if (ring.charAt(idxRing) == key.charAt(idxKey) ) {
-    				//ringÖĞ¿ÉÄÜ»áÓĞ¶à¸ö×Ö·ûÆ¥Åä £¬¶¼ÒªËÑË÷£¬ÏÂ±êÎªidxRing
+    				//ringä¸­å¯èƒ½ä¼šæœ‰å¤šä¸ªå­—ç¬¦åŒ¹é… ï¼Œéƒ½è¦æœç´¢ï¼Œä¸‹æ ‡ä¸ºidxRing
     				
-    				if (idxKey == 0) //¶ÔÓÚkeyÖĞµÚÒ»¸ö×Ö·û
+    				if (idxKey == 0) //å¯¹äºkeyä¸­ç¬¬ä¸€ä¸ªå­—ç¬¦
     					dp[idxKey][idxRing] = getMinSteps(0, idxRing);
-    				else {//²»ÊÇkeyÖĞµÚÒ»¸ö×Ö·û ÔòĞèÒª¸ù¾İÉÏÒ»ĞĞ
+    				else {//ä¸æ˜¯keyä¸­ç¬¬ä¸€ä¸ªå­—ç¬¦ åˆ™éœ€è¦æ ¹æ®ä¸Šä¸€è¡Œ
     					for (int k = 0; k < ring.length(); k ++) {
-    						//±éÀúÉÏÒ»ĞĞ
+    						//éå†ä¸Šä¸€è¡Œ
     						if (dp[idxKey - 1][k] != NOT_MATCH) {
-    							//ËµÃ÷ring[k]Óëkey[idxKey - 1]Æ¥Åä
-    							//minest(´Ók×ªµ½idxRingµÄ×îĞ¡×ªÊı + dp[idxKey - 1][k])
+    							//è¯´æ˜ring[k]ä¸key[idxKey - 1]åŒ¹é…
+    							//minest(ä»kè½¬åˆ°idxRingçš„æœ€å°è½¬æ•° + dp[idxKey - 1][k])
     							dp[idxKey][idxRing] = 
     								Math.min(dp[idxKey - 1][k] + getMinSteps(k, idxRing), dp[idxKey][idxRing]);
     						}//sec if
-    					}//thr for ½áÊøËÑË÷ÉÏÒ»ĞĞµÄÃ¿Ò»ÁĞ
+    					}//thr for ç»“æŸæœç´¢ä¸Šä¸€è¡Œçš„æ¯ä¸€åˆ—
     				}//else
-    			}//fst if µ±Ç°ĞĞµÄÕâÒ»ÁĞ¶ÔÓ¦µÄring×Ö·ûÓëµ±Ç°ĞĞ¶ÔÓ¦µÄkey×Ö·ûÆ¥Åä
-    		}//sec for ½áÊøËÑË÷µ±Ç°ĞĞµÄÃ¿Ò»ÁĞ
-    	}//fst for ½áÊø±éÀúÃ¿Ò»ĞĞ
+    			}//fst if å½“å‰è¡Œçš„è¿™ä¸€åˆ—å¯¹åº”çš„ringå­—ç¬¦ä¸å½“å‰è¡Œå¯¹åº”çš„keyå­—ç¬¦åŒ¹é…
+    		}//sec for ç»“æŸæœç´¢å½“å‰è¡Œçš„æ¯ä¸€åˆ—
+    	}//fst for ç»“æŸéå†æ¯ä¸€è¡Œ
     	
-    	//ÕÒdp¶şÎ¬Êı×é×îºóÒ»ĞĞ·ÇNOT_MATCHµÄ×îĞ¡Öµ
+    	//æ‰¾dpäºŒç»´æ•°ç»„æœ€åä¸€è¡ŒéNOT_MATCHçš„æœ€å°å€¼
     	int minDP = 99999;
     	for (int j = 0; j < ring.length(); j ++) {
     		if (ring.charAt(j) == key.charAt(key.length() - 1) &&
     				dp[key.length() - 1][j] < minDP)
     			minDP = dp[key.length() - 1][j];
     	}
-    	//minDPÎª-1 what the f??
+    	//minDPä¸º-1 what the f??
     	return key.length() + minDP;
     }//method findRotateSteps
     
-    //½«ring´ÓidxStart×ªµ½idxEndËùĞèµÄ×îĞ¡²½Êı
-    //³öÁË¼¸¸öbug
+    //å°†ringä»idxStartè½¬åˆ°idxEndæ‰€éœ€çš„æœ€å°æ­¥æ•°
+    //å‡ºäº†å‡ ä¸ªbug
     private int getMinSteps(int idxStart, int idxEnd) {
-    	System.out.println(idxStart + "×ªµ½" + idxEnd + "ĞèÒª" +
+    	System.out.println(idxStart + "è½¬åˆ°" + idxEnd + "éœ€è¦" +
     			Math.min(Math.abs(idxEnd - idxStart), ring.length() - Math.abs(idxEnd - idxStart) ) );
     	
     	return Math.min(Math.abs(idxEnd - idxStart), ring.length() - Math.abs(idxEnd - idxStart) );
